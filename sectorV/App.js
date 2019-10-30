@@ -12,6 +12,8 @@ import ReportScreen from './src/screens/ReportScreen';
 import UserListScreen from './src/screens/UserListScreen';
 import UserDetailScreen from './src/screens/UserDetailScreen';
 import {FontAwesome} from '@expo/vector-icons';
+import {setNavigator} from './src/navigationRef';
+import {Provider as AuthProvider} from './src/context/AuthContext';
 
 const userListflow = createStackNavigator({
   UserList: UserListScreen,
@@ -25,8 +27,8 @@ userListflow.navigationOptions ={
 
 const switchNavigator = createSwitchNavigator({
   loginFlow:createStackNavigator({
-    Signup:SignupScreen,
-    Signin:SigninScreen
+    Signin:SigninScreen,
+    Signup:SignupScreen    
   }),
   adminFlow: createBottomTabNavigator({
     Report: ReportScreen,
@@ -35,8 +37,8 @@ const switchNavigator = createSwitchNavigator({
     Account:AccountScreen
   }),
   userFlow: createBottomTabNavigator({
-    EntryList: EntryListScreen,
     CodeBar: CodeBarScreen,
+    EntryList: EntryListScreen,
     Account:AccountScreen
   })
 });
@@ -45,7 +47,8 @@ const App= createAppContainer(switchNavigator);
 
 export default() =>{
   return (
-      <App/> 
-    // <App ref = {(navigator)=>{setNavigator(navigator)}}/>
+    <AuthProvider>
+      <App ref = {(navigator)=>{setNavigator(navigator)}}/>
+    </AuthProvider> 
   );
 };

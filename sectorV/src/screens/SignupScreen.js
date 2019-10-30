@@ -1,3 +1,4 @@
+//TODO: FIX fields. name, fecha etc...
 import React,{useContext} from 'react';
 import {View,Text,StyleSheet} from 'react-native';
 // import {Context as AuthContext} from '../context/AuthContext';

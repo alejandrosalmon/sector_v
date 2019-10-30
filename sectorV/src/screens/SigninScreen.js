@@ -2,20 +2,20 @@ import React, { useContext } from 'react';
 import {View,Text,StyleSheet} from 'react-native';
 import AuthForm from '../components/AuthForm';
 import NavLink from '../components/NavLink';
-// import {NavigationEvents} from 'react-navigation';
-// import {Context} from '../context/AuthContext';
+import {NavigationEvents} from 'react-navigation';
+import {Context} from '../context/AuthContext';
 
 const SigninScreen = ()=>{
-    // const {state,signin,clearErrorMessage} = useContext(Context);
+    const {state,signin,clearErrorMessage} = useContext(Context);
     return(
         <View style = {styles.container}>
-            {/* <NavigationEvents
+            <NavigationEvents
                 onWillBlur={clearErrorMessage}
-            /> */}
+            />
             <AuthForm
                 headerText="Inicia sesión en Sector V"
-                errorMessage={null}
-                onSubmit={null}
+                errorMessage={state.errorMessage}
+                onSubmit={signin}
                 submitButtonText="Inicia sesión"
             />
             <NavLink

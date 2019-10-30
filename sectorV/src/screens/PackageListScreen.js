@@ -1,22 +1,30 @@
-import React, {useContext} from 'react';
-import {View,Text,StyleSheet} from 'react-native';
-// import {Button} from 'react-native-elements';
-// import Spacer from '../components/Spacer';
-// import {Context as AuthContext} from '../context/AuthContext';
-// import {SafeAreaView} from 'react-navigation';
+import React,{useContext} from 'react';
+import {StyleSheet, FlatList} from 'react-native';
+import {NavigationEvents} from 'react-navigation';
+import { Context as PackageContext } from "../context/PackageContext";
+import {ListItem} from 'react-native-elements';
+import {Feather} from '@expo/vector-icons';
+import {SafeAreaView} from 'react-navigation';
 
-const PackageListScreen = ()=>{
-    // const {signout} = useContext(AuthContext);
-    return(
-        <Text style={{fontSize:48}}>PackageListScreen</Text>
-        // <SafeAreaView forceInset={{top:'always'}}>
-        //     <Text style={{fontSize:48}}>Account screen</Text>
-        //     <Spacer>
-        //         <Button title="Sign out" onPress={signout}/>
-        //     </Spacer>
-        // </SafeAreaView>
-    );
+const PackageListScreen = ({navigation})=>{
+    const {state, fetchPackages}=useContext(PackageContext);
+    console.log(state);
+    return <SafeAreaView forceInset={{top:'always'}}>
+        <NavigationEvents onWillFocus={fetchPackages}/>
+        <FlatList
+            data ={state}
+            keyExtractor={item=>item._id}
+            renderItem = {({item})=>{
+                return <ListItem
+                        title = {item.name}
+                    />
+            }}
+        />
+    </SafeAreaView>
 };
-
+PackageListScreen.navigationOptions ={
+    title: 'Packages',
+    tabBarIcon:<Feather name="package" size={20}/>
+};
 const styles = StyleSheet.create({});
 export default PackageListScreen;

@@ -12,9 +12,10 @@ import ReportScreen from './src/screens/ReportScreen';
 import UserListScreen from './src/screens/UserListScreen';
 import UserDetailScreen from './src/screens/UserDetailScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
-import {FontAwesome} from '@expo/vector-icons';
+import {Feather} from '@expo/vector-icons';
 import {setNavigator} from './src/navigationRef';
 import {Provider as AuthProvider} from './src/context/AuthContext';
+import {Provider as PackageProvider} from './src/context/PackageContext';
 
 const userListflow = createStackNavigator({
   UserList: UserListScreen,
@@ -23,7 +24,7 @@ const userListflow = createStackNavigator({
 
 userListflow.navigationOptions ={
   title: 'Users',
-  tabBarIcon: <FontAwesome name="th-list" size={20}/>
+  tabBarIcon: <Feather name="users" size={20}/>
 };
 
 const switchNavigator = createSwitchNavigator({
@@ -49,8 +50,11 @@ const App= createAppContainer(switchNavigator);
 
 export default() =>{
   return (
-    <AuthProvider>
-      <App ref = {(navigator)=>{setNavigator(navigator)}}/>
-    </AuthProvider> 
+    <PackageProvider>
+      <AuthProvider>
+        <App ref = {(navigator)=>{setNavigator(navigator)}}/>
+      </AuthProvider>
+    </PackageProvider>
+     
   );
 };

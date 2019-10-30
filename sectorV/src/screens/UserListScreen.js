@@ -17,6 +17,8 @@ const UserListScreen = ()=>{
         // </SafeAreaView>
     );
 };
-
+UserListScreen.navigationOptions ={
+    title: 'Users'
+};
 const styles = StyleSheet.create({});
 export default UserListScreen;

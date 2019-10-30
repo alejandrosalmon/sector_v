@@ -1,22 +1,30 @@
-import React, {useContext} from 'react';
-import {View,Text,StyleSheet} from 'react-native';
-// import {Button} from 'react-native-elements';
-// import Spacer from '../components/Spacer';
-// import {Context as AuthContext} from '../context/AuthContext';
-// import {SafeAreaView} from 'react-navigation';
+import React,{useContext} from 'react';
+import {StyleSheet, FlatList} from 'react-native';
+import {NavigationEvents} from 'react-navigation';
+import { Context as EntryContext } from "../context/EntryContext";
+import {ListItem,Text} from 'react-native-elements';
+import {Feather} from '@expo/vector-icons';
+import {SafeAreaView} from 'react-navigation';
 
-const EntryListScreen = ()=>{
-    // const {signout} = useContext(AuthContext);
-    return(
-        <Text style={{fontSize:48}}>EntryListScreen</Text>
-        // <SafeAreaView forceInset={{top:'always'}}>
-        //     <Text style={{fontSize:48}}>Account screen</Text>
-        //     <Spacer>
-        //         <Button title="Sign out" onPress={signout}/>
-        //     </Spacer>
-        // </SafeAreaView>
-    );
+const EntryListScreen = ({navigation})=>{
+    const {state, fetchEntries}=useContext(EntryContext);
+    return <SafeAreaView forceInset={{top:'always'}}>
+        <NavigationEvents onWillFocus={fetchEntries}/>
+        <Text h3>Historial de entradas</Text>
+        <FlatList
+            data ={state}
+            keyExtractor={item=>item._id}
+            renderItem = {({item})=>{
+                return <ListItem
+                        title = {item.time}
+                    />
+            }}
+        />
+    </SafeAreaView>
 };
-
+EntryListScreen.navigationOptions ={
+    title: 'Historial',
+    tabBarIcon: <Feather name="list" size={20}/>
+};
 const styles = StyleSheet.create({});
 export default EntryListScreen;

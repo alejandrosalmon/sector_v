@@ -2,7 +2,7 @@ import React,{useContext} from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 import {NavigationEvents} from 'react-navigation';
 import { Context as PackageContext } from "../context/PackageContext";
-import {ListItem} from 'react-native-elements';
+import {ListItem,Text} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
 import {SafeAreaView} from 'react-navigation';
 
@@ -11,6 +11,7 @@ const PackageListScreen = ({navigation})=>{
     console.log(state);
     return <SafeAreaView forceInset={{top:'always'}}>
         <NavigationEvents onWillFocus={fetchPackages}/>
+        <Text h3>Paquetes</Text>
         <FlatList
             data ={state}
             keyExtractor={item=>item._id}

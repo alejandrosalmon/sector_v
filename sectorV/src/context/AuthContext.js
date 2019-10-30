@@ -72,7 +72,7 @@ const signin = (dispatch)=>async ({email,password})=>{
         }
         
     }catch(err){
-        dispatch({type: 'add_error', payload:'Something went wrong with sign in.'})
+        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'})
     }
 };
 

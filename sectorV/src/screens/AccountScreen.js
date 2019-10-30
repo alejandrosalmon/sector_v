@@ -18,7 +18,7 @@ const AccountScreen = ()=>{
     );
 };
 AccountScreen.navigationOptions ={
-    title: 'Account',
+    title: 'Cuenta',
     tabBarIcon: <Feather name="settings" size={20}/>
 };
 

@@ -23,7 +23,7 @@ const PackageListScreen = ({navigation})=>{
     </SafeAreaView>
 };
 PackageListScreen.navigationOptions ={
-    title: 'Packages',
+    title: 'Paquetes',
     tabBarIcon:<Feather name="package" size={20}/>
 };
 const styles = StyleSheet.create({});

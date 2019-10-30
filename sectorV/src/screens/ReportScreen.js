@@ -10,12 +10,12 @@ const ReportScreen = ()=>{
     // const {signout} = useContext(AuthContext);
     return(
         <SafeAreaView forceInset={{top:'always'}}>
-            <Text style={{fontSize:48}}>Report screen</Text>
+            <Text style={{fontSize:48}}>Inicio</Text>
         </SafeAreaView>
     );
 };
 ReportScreen.navigationOptions ={
-    title: 'Report',
+    title: 'Inicio',
     tabBarIcon: <Feather name="file-text" size={20}/>
 };
 const styles = StyleSheet.create({});

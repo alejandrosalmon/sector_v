@@ -16,6 +16,7 @@ import {Feather} from '@expo/vector-icons';
 import {setNavigator} from './src/navigationRef';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {Provider as PackageProvider} from './src/context/PackageContext';
+import {Provider as UserProvider} from './src/context/UserContext';
 
 const userListflow = createStackNavigator({
   UserList: UserListScreen,
@@ -23,7 +24,7 @@ const userListflow = createStackNavigator({
 });
 
 userListflow.navigationOptions ={
-  title: 'Users',
+  title: 'Alumnos',
   tabBarIcon: <Feather name="users" size={20}/>
 };
 
@@ -50,11 +51,12 @@ const App= createAppContainer(switchNavigator);
 
 export default() =>{
   return (
-    <PackageProvider>
-      <AuthProvider>
-        <App ref = {(navigator)=>{setNavigator(navigator)}}/>
-      </AuthProvider>
-    </PackageProvider>
-     
+    <UserProvider>
+      <PackageProvider>
+          <AuthProvider>
+            <App ref = {(navigator)=>{setNavigator(navigator)}}/>
+          </AuthProvider>
+        </PackageProvider>
+    </UserProvider>
   );
 };

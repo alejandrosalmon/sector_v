@@ -11,6 +11,7 @@ import EntryListScreen from './src/screens/EntryListScreen';
 import ReportScreen from './src/screens/ReportScreen';
 import UserListScreen from './src/screens/UserListScreen';
 import UserDetailScreen from './src/screens/UserDetailScreen';
+import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import {FontAwesome} from '@expo/vector-icons';
 import {setNavigator} from './src/navigationRef';
 import {Provider as AuthProvider} from './src/context/AuthContext';
@@ -26,6 +27,7 @@ userListflow.navigationOptions ={
 };
 
 const switchNavigator = createSwitchNavigator({
+  ResolveAuth:ResolveAuthScreen,
   loginFlow:createStackNavigator({
     Signin:SigninScreen,
     Signup:SignupScreen    

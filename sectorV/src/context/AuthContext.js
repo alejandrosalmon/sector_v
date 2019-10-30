@@ -17,15 +17,29 @@ const authReducer = (state,action)=>{
     }
 };
 
-// const tryLocalSignin =dispatch=> async()=>{
-//     const token = await AsyncStorage.getItem('token');
-//     if(token){
-//         dispatch({type:'signin', payload:token});
-//         navigate('TrackList');
-//     }else{
-//         navigate('Signup');
-//     }
-// };
+const tryLocalSignin =dispatch=> async()=>{
+    const token = await AsyncStorage.getItem('token');
+    if(token){
+        dispatch({type:'signin', payload:token});
+        const roleJSON = await AsyncStorage.getItem('role');
+        if(roleJSON){
+            try {
+                role = JSON.parse(roleJSON);
+                if(role==0){
+                    navigate('Report');
+                }else if(role==1){
+                    navigate('CodeBar');
+                }
+            } catch (e) {
+                console.error('AsyncStorage#getItem error deserializing JSON for key: role' +  e.message);
+            }   
+        }else{
+            navigate('Signin');
+        }
+    }else{
+        navigate('Signin');
+    }
+};
 
 const clearErrorMessage = dispatch => () =>{
     dispatch({type: 'clear_error_message'});
@@ -36,6 +50,8 @@ const signup = dispatch => async ({email,password})=>{ //TODO: FIX FIELDS
     //     const response = await expressAPI.post('/signup',{email,password});
     //     await AsyncStorage.setItem('token',response.data.token);
     //     dispatch({type: 'signin', payload: response.data.token});
+    //     const role = parseInt(response.data.role);
+    //     await AsyncStorage.setItem('role',role);
     //     navigate('TrackList');
     // }catch(err){
     //     dispatch({type: 'add_error', payload: 'Something went wrong with sign up.'})
@@ -46,6 +62,7 @@ const signin = (dispatch)=>async ({email,password})=>{
     try{
         const response = await expressAPI.post('/signin',{email,password});
         await AsyncStorage.setItem('token',response.data.token);
+        await AsyncStorage.setItem('role',JSON.stringify(response.data.role));
         dispatch({type:'signin',payload: response.data.token});
         const role = parseInt(response.data.role);
         if(role==0){
@@ -61,6 +78,7 @@ const signin = (dispatch)=>async ({email,password})=>{
 
 const signout = (dispatch)=>async()=>{
     await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('role');
     dispatch({type: 'signout'})
     navigate('loginFlow');
 };
@@ -68,7 +86,6 @@ const signout = (dispatch)=>async()=>{
 
 export const {Provider,Context}=createDataContext(
     authReducer,
-    {signout,clearErrorMessage,signin,signup},
-    // {signin,signout,signup, clearErrorMessage, tryLocalSignin},
+    {signout,clearErrorMessage,signin,signup,tryLocalSignin},
     {token:null,errorMessage:''}
 );

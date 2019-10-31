@@ -18,6 +18,7 @@ import {Provider as AuthProvider} from './src/context/AuthContext';
 import {Provider as PackageProvider} from './src/context/PackageContext';
 import {Provider as UserProvider} from './src/context/UserContext';
 import {Provider as EntryProvider} from './src/context/EntryContext';
+import {Provider as ProfileProvider} from './src/context/ProfileContext';
 
 const userListflow = createStackNavigator({
   UserList: UserListScreen,
@@ -52,14 +53,16 @@ const App= createAppContainer(switchNavigator);
 
 export default() =>{
   return (
-    <EntryProvider>
-      <UserProvider>
-        <PackageProvider>
-            <AuthProvider>
-              <App ref = {(navigator)=>{setNavigator(navigator)}}/>
-            </AuthProvider>
-          </PackageProvider>
-      </UserProvider>
-    </EntryProvider>
+    <ProfileProvider>
+      <EntryProvider>
+        <UserProvider>
+          <PackageProvider>
+              <AuthProvider>
+                <App ref = {(navigator)=>{setNavigator(navigator)}}/>
+              </AuthProvider>
+            </PackageProvider>
+        </UserProvider>
+      </EntryProvider>
+    </ProfileProvider>
   );
 };

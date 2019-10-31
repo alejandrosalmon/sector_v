@@ -6,6 +6,7 @@ import {View,StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Text} from 'react-native-elements';
 import {Ionicons} from '@expo/vector-icons';
+import {Context as EntryContext} from '../context/EntryContext';
 
 const CodeBarScreen = ()=>{
     // const {signout} = useContext(AuthContext);

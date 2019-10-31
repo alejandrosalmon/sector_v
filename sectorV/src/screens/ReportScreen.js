@@ -1,16 +1,41 @@
 import React, {useContext} from 'react';
-import {View,Text,StyleSheet} from 'react-native';
-// import {Button} from 'react-native-elements';
-// import Spacer from '../components/Spacer';
+import {View,StyleSheet} from 'react-native';
+import {Text} from 'react-native-elements';
+import Spacer from '../components/Spacer';
+import {NavigationEvents} from 'react-navigation';
+import CardData from '../components/CardData';
 // import {Context as AuthContext} from '../context/AuthContext';
 import {SafeAreaView} from 'react-navigation';
 import {Feather} from '@expo/vector-icons';
+import { Context as UserContext } from "../context/UserContext";
+import { Context as EntryContext } from "../context/EntryContext";
 
 const ReportScreen = ()=>{
-    // const {signout} = useContext(AuthContext);
+    const {state:entryState,fetchAllEntries} = useContext(EntryContext);
+    const {state:userState, fetchUsers}=useContext(UserContext);
     return(
         <SafeAreaView forceInset={{top:'always'}}>
-            <Text style={{fontSize:48}}>Inicio</Text>
+            <NavigationEvents onWillFocus={()=>{
+                fetchAllEntries();
+                fetchUsers();
+            }}/>
+            <Spacer>
+                <Text h3>Inicio</Text>
+            </Spacer>
+            <Spacer>
+                <CardData
+                    number={userState.length}
+                    text="alumnos registrados"
+                />
+            </Spacer>
+            <Spacer>
+                <CardData
+                    number={entryState.length}
+                    text="visitas en el mes"
+                />
+            </Spacer>
+            
+
         </SafeAreaView>
     );
 };

@@ -9,6 +9,8 @@ const entryReducer=(state,action)=>{
             return action.payload;
         case 'register_entry':
             return action.payload;
+        case 'fetch_all_entries':
+            return action.payload;
         default: return state;
     }
 };
@@ -28,8 +30,13 @@ const registerEntry = dispatch => async() =>{
     dispatch({type: 'register_entry', payload:response.data});
 }
 
+const fetchAllEntries = dispatch =>async() =>{
+    const response = await expressAPI.get('/all_entries');
+    dispatch({type: 'fetch_all_entries',payload: response.data});
+};
+
 export const {Provider,Context}=createDataContext(
     entryReducer,
-    {fetchEntries, fetchEntriesMonth, registerEntry},
+    {fetchEntries,fetchAllEntries, fetchEntriesMonth, registerEntry},
     []
 );

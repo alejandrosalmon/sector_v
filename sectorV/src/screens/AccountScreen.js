@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Button} from 'react-native';
 import {Text} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
@@ -24,6 +24,12 @@ const AccountScreen = ()=>{
             <Spacer>
                 <Text h4>{state.registration_time}</Text>
                 <Text style={styles.role}>Rol: {state.role == '0'?'Admin':"Alumno"}</Text>
+            </Spacer>
+            <Spacer>
+                <Button
+                    title="Cerrar sesión"
+                    onPress={signout}
+                />
             </Spacer>
             
         </SafeAreaView>

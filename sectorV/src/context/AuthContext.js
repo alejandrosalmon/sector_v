@@ -45,17 +45,21 @@ const clearErrorMessage = dispatch => () =>{
     dispatch({type: 'clear_error_message'});
 };
 
-const signup = dispatch => async ({email,password})=>{ //TODO: FIX FIELDS
-    // try{
-    //     const response = await expressAPI.post('/signup',{email,password});
-    //     await AsyncStorage.setItem('token',response.data.token);
-    //     dispatch({type: 'signin', payload: response.data.token});
-    //     const role = parseInt(response.data.role);
-    //     await AsyncStorage.setItem('role',role);
-    //     navigate('TrackList');
-    // }catch(err){
-    //     dispatch({type: 'add_error', payload: 'Something went wrong with sign up.'})
-    // }
+const signup = dispatch => async ({email,password,name})=>{ //TODO: FIX FIELDS
+    try{
+        const response = await expressAPI.post('/signup',{email,password,name});
+        await AsyncStorage.setItem('token',response.data.token);
+        await AsyncStorage.setItem('role',JSON.stringify(response.data.role));
+        dispatch({type: 'signin', payload: response.data.token});
+        const role = parseInt(response.data.role);
+        if(role==0){
+            navigate('Report');
+        }else if(role==1){
+            navigate('CodeBar');
+        }
+    }catch(err){
+        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
+    }
 };
 
 const signin = (dispatch)=>async ({email,password})=>{
@@ -72,7 +76,7 @@ const signin = (dispatch)=>async ({email,password})=>{
         }
         
     }catch(err){
-        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'})
+        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
     }
 };
 

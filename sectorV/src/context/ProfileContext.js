@@ -11,7 +11,6 @@ const profileReducer=(state,action)=>{
 
 const fetchProfiles = dispatch =>async() =>{
     const response = await expressAPI.get('/profile');
-    console.log("data: "+response.data);
     dispatch({type: 'fetch_profiles',payload: response.data});
 };
 

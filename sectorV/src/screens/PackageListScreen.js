@@ -8,7 +8,6 @@ import {SafeAreaView} from 'react-navigation';
 
 const PackageListScreen = ({navigation})=>{
     const {state, fetchPackages}=useContext(PackageContext);
-    console.log(state);
     return <SafeAreaView forceInset={{top:'always'}}>
         <NavigationEvents onWillFocus={fetchPackages}/>
         <Text h3>Paquetes</Text>

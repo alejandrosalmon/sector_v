@@ -11,13 +11,14 @@ const UserListScreen = ({navigation})=>{
         <FlatList
             data ={state}
             keyExtractor={item=>item._id}
-            renderItem = {({item})=>{
+            renderItem = {({item,index})=>{
                 return <TouchableOpacity
                     onPress = {()=>navigation.navigate('UserDetail',{_id:item._id})}
                 >
                     <ListItem
                         chevron
-                        title = {item.name}
+
+                        title = {`${(index+1)}. ${item.name}`}
                     />
                 </TouchableOpacity>
             }}

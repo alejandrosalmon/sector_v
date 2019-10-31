@@ -20,7 +20,9 @@ const UserDetailScreen = ({navigation})=>{
             <Spacer>
                 <Text style={styles.text}>Día de corte: {User.due_date}</Text>
             </Spacer>
-            
+            <Spacer>
+                <Text style={styles.text}>Paquete contratado: {User.package? User.package.name:'ninguno'}</Text>
+            </Spacer>
             
         </>
         

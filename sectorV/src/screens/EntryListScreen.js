@@ -5,19 +5,35 @@ import { Context as EntryContext } from "../context/EntryContext";
 import {ListItem,Text} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
 import {SafeAreaView} from 'react-navigation';
+import Spacer from '../components/Spacer';
+const moment=require('moment');
+
+moment.locale('es', {
+    months : 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
+    monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
+    monthsParseExact : true,
+    weekdays : 'Domingo_Lunes_Martes_Miércoles_Jueves_Viernes_Sábado'.split('_'),
+    weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+    weekdaysMin : 'Di_Lu_Ma_Mi_Ju_Vi_Sa'.split('_'),
+    weekdaysParseExact : true,
+});
+
 
 const EntryListScreen = ({navigation})=>{
     const {state, fetchEntries}=useContext(EntryContext);
     return <SafeAreaView forceInset={{top:'always'}}>
         <NavigationEvents onWillFocus={fetchEntries}/>
-        <Text h3>Historial de entradas</Text>
+        <Spacer>
+            <Text h3>Historial de entradas</Text>
+        </Spacer>
         <FlatList
             data ={state}
             keyExtractor={item=>item._id}
             renderItem = {({item})=>{
-                return <ListItem
-                        title = {item.time}
-                    />
+                return <Spacer><ListItem
+                                title = {moment(item.time, "YYYY-MM-DDTHH:mm:ss.sssZ").format("dddd, MMMM Do YYYY, h:mm:ss a")}
+                                bottomDivider
+                            /></Spacer>
             }}
         />
     </SafeAreaView>

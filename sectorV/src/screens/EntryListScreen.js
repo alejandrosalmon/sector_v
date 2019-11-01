@@ -5,19 +5,24 @@ import { Context as EntryContext } from "../context/EntryContext";
 import {ListItem,Text} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
 import {SafeAreaView} from 'react-navigation';
+import Spacer from '../components/Spacer';
+const moment=require('moment');
 
 const EntryListScreen = ({navigation})=>{
     const {state, fetchEntries}=useContext(EntryContext);
     return <SafeAreaView forceInset={{top:'always'}}>
         <NavigationEvents onWillFocus={fetchEntries}/>
-        <Text h3>Historial de entradas</Text>
+        <Spacer>
+            <Text h3>Historial de entradas</Text>
+        </Spacer>
         <FlatList
             data ={state}
             keyExtractor={item=>item._id}
             renderItem = {({item})=>{
-                return <ListItem
-                        title = {item.time}
-                    />
+                return <Spacer><ListItem
+                                title = {moment(item.time, "YYYY-MM-DDTHH:mm:ss.sssZ").format("dddd, MMMM Do YYYY, h:mm:ss a")}
+                                bottomDivider
+                            /></Spacer>
             }}
         />
     </SafeAreaView>

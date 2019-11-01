@@ -50,6 +50,7 @@ const CodeBarScreen = ()=>{
                         registerEntry();
                         fetchEntriesMonth();
                     }}
+                    disabled = {packageState.entries_per_month - entryState.length <= 0 ? true: false }
                 />
             </Spacer>
         </SafeAreaView>

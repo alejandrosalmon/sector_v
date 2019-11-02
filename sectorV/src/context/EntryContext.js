@@ -1,6 +1,5 @@
 import createDataContext from "./createDataContext";
 import expressAPI from '../api/expressAPI';
-import {navigate} from '../navigationRef';
 
 const entryReducer=(state,action)=>{
     switch(action.type){

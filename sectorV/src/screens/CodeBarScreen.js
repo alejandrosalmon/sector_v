@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {View,StyleSheet,Button} from 'react-native';
 // import {Button} from 'react-native-elements';
 // import Spacer from '../components/Spacer';

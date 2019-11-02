@@ -8,7 +8,7 @@ const entryReducer=(state,action)=>{
         case 'fetch_entries_month':
             return action.payload;
         case 'register_entry':
-            return action.payload;
+            return state;
         case 'fetch_all_entries':
             return action.payload;
         default: return state;
@@ -26,8 +26,8 @@ const fetchEntriesMonth = dispatch => async() =>{
 }
 
 const registerEntry = dispatch => async() =>{
-    const response = await expressAPI.post('/entries');
-    dispatch({type: 'register_entry', payload:response.data});
+    const response = expressAPI.post('/entries');
+    dispatch({type: 'register_entry'});
 }
 
 const fetchAllEntries = dispatch =>async() =>{

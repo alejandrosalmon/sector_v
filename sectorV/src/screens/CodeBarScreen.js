@@ -10,18 +10,21 @@ import {Ionicons} from '@expo/vector-icons';
 import {Context as EntryContext} from '../context/EntryContext';
 import {Context as ProfileContext} from '../context/ProfileContext';
 import {Context as PackageContext} from '../context/PackageContext';
+import { navigate } from '../navigationRef';
 
 const CodeBarScreen = ()=>{
     const {state:userState, fetchProfiles}=useContext(ProfileContext);
-    const {state:entryState, fetchEntriesMonth, registerEntry}=useContext(EntryContext);
+    var {state:entryState, fetchEntriesMonth, registerEntry}=useContext(EntryContext);
     const {state:packageState, fetchPackage}=useContext(PackageContext);
-    //const leftEntries = Object.keys(entry).length;
+    registerEntry.bind(this);
+
     return(
         <SafeAreaView forceInset={{top:'always'}}>
             <NavigationEvents onWillFocus={()=>{
                 fetchProfiles();
                 fetchPackage();
                 fetchEntriesMonth();
+                console.log(entryState.length);
             }}/>
             <Spacer>
                 <Text h3>Inicio</Text>
@@ -43,10 +46,11 @@ const CodeBarScreen = ()=>{
             <Spacer>
                 <Button
                     title = "Registrar entrada"
-                    onPress = {()=>{
+                    onPress = {() => {
                         registerEntry();
                         fetchEntriesMonth();
                     }}
+                    disabled = {packageState.entries_per_month - entryState.length <= 0 ? true: false }
                 />
             </Spacer>
         </SafeAreaView>

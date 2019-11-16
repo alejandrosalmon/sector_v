@@ -6,17 +6,37 @@ import {ListItem, SearchBar} from 'react-native-elements';
 
 
 const UserListScreen = ({navigation})=>{
-    const [search, setSearch] = useState('');
+    const [textS, setTextS] = useState('');
     const [data, setData] = useState([]);
     const {state, fetchUsers}=useContext(UserContext);
 
-    
+    function SearchFilterFunction(text) {
+        console.log(text);
+        //passing the inserted text in textinput
+        const newData = state.filter(function(item) {
+          //applying filter for the inserted text in search bar
+          const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        setTextS(text);
+        setData(newData);
+    }
 
     return <>
         <NavigationEvents onWillFocus={()=>{
             fetchUsers();
             setData(state);
             }}/>
+        <SearchBar
+          round
+          lightTheme
+          searchIcon={{ size: 24 }}
+          onChangeText={text => SearchFilterFunction(text)}
+          onClear={text => SearchFilterFunction('')}
+          placeholder="Buscar..."
+          value={textS}
+        />
         <FlatList
             data ={data}
             keyExtractor={item=>item._id}

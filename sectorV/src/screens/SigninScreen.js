@@ -7,7 +7,7 @@ import {Context} from '../context/AuthContext';
 import GoogleSigninButton from '../components/GoogleSignInButton';
 import * as Google from 'expo-google-app-auth';
 
-const SigninScreen = ()=>{
+const SigninScreen = ({navigation})=>{
     const {state,signin,clearErrorMessage} = useContext(Context);
 
     async function  signInWithGoogleAsync () {
@@ -19,6 +19,9 @@ const SigninScreen = ()=>{
                 scopes: ['profile', 'email'],
             });
             if (result.type === 'success') {
+                //navigation.navigate('');
+                console.log(result.user);
+                console.log(result.accessToken);
                 return result.accessToken;
             } else {
                 return { cancelled: true };

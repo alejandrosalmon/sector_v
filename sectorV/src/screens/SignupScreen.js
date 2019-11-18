@@ -6,12 +6,36 @@ import NavLink from '../components/NavLink';
 import {NavigationEvents} from 'react-navigation';
 import {Text,Input, Button} from 'react-native-elements';
 import Spacer from '../components/Spacer';
+import GoogleSigninButton from '../components/GoogleSignInButton';
+import * as Google from 'expo-google-app-auth';
 
 const SignupScreen = ({navigation})=>{
     const {state:{errorMessage},signup,clearErrorMessage} = useContext(AuthContext);
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [name,setName] = useState('');
+
+    async function  signInWithGoogleAsync () {
+        try {
+            const result = await Google.logInAsync({
+                behavior:'web',
+                androidClientId: '750419774789-okk82pd6ejdoqihsln2o792qb4mrpb9g.apps.googleusercontent.com',
+                iosClientId: '750419774789-ca66i9k7ntfc963sgqrgvi31k3n8qs3s.apps.googleusercontent.com',
+                scopes: ['profile', 'email'],
+            });
+            if (result.type === 'success') {
+                //navigation.navigate('');
+                console.log(result.user);
+                console.log(result.accessToken);
+                return result.accessToken;
+            } else {
+                return { cancelled: true };
+            }
+        } catch (e) {
+            return { error: true };
+        }
+    }
+
     return (
         <View style = {styles.container}>
             <NavigationEvents
@@ -19,6 +43,13 @@ const SignupScreen = ({navigation})=>{
             />
             <Spacer>
                 <Text h3>Regístrate en Sector V</Text>
+            </Spacer>
+            <GoogleSigninButton
+                action = {()=>signInWithGoogleAsync()}
+                text = "Regístrate con Google"
+            />
+            <Spacer>
+                <Text h4>O regístrate con tu correo electrónico</Text>
             </Spacer>
             {/* Falta validación regex de correo y un Input para confirmar contraseña. */}
             <Input 
@@ -67,7 +98,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent: 'center',
-        marginBottom: 200
+        marginBottom: 75
     },errorMessage:{
         fontSize:16,
         color: 'red',

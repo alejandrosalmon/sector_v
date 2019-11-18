@@ -4,6 +4,7 @@ import AuthForm from '../components/AuthForm';
 import NavLink from '../components/NavLink';
 import {NavigationEvents} from 'react-navigation';
 import {Context} from '../context/AuthContext';
+import GoogleSigninButton from '../components/GoogleSignInButton';
 
 const SigninScreen = ()=>{
     const {state,signin,clearErrorMessage} = useContext(Context);
@@ -19,6 +20,10 @@ const SigninScreen = ()=>{
                 submitButtonText="Inicia sesión"
             />
             
+            <GoogleSigninButton
+                action = {()=>{console.log('Clicked google signed in')}}
+                text = "Inicia sesión con Google"
+            />
             <NavLink
                 routeName="Signup"
                 text="¿No tienes cuenta? Regístrate"

@@ -1,13 +1,33 @@
 import React, { useContext } from 'react';
-import {View,Text,StyleSheet} from 'react-native';
+import {View,Text,StyleSheet,Button} from 'react-native';
 import AuthForm from '../components/AuthForm';
 import NavLink from '../components/NavLink';
 import {NavigationEvents} from 'react-navigation';
 import {Context} from '../context/AuthContext';
 import GoogleSigninButton from '../components/GoogleSignInButton';
+import * as Google from 'expo-google-app-auth';
 
 const SigninScreen = ()=>{
     const {state,signin,clearErrorMessage} = useContext(Context);
+
+    async function  signInWithGoogleAsync () {
+        try {
+            const result = await Google.logInAsync({
+                behavior:'web',
+                androidClientId: '750419774789-okk82pd6ejdoqihsln2o792qb4mrpb9g.apps.googleusercontent.com',
+                iosClientId: '750419774789-ca66i9k7ntfc963sgqrgvi31k3n8qs3s.apps.googleusercontent.com',
+                scopes: ['profile', 'email'],
+            });
+            if (result.type === 'success') {
+                return result.accessToken;
+            } else {
+                return { cancelled: true };
+            }
+        } catch (e) {
+            return { error: true };
+        }
+    }
+
     return(
         <View style = {styles.container}>
             <NavigationEvents
@@ -19,9 +39,8 @@ const SigninScreen = ()=>{
                 onSubmit={signin}
                 submitButtonText="Inicia sesión"
             />
-            
             <GoogleSigninButton
-                action = {()=>{console.log('Clicked google signed in')}}
+                action = {()=>signInWithGoogleAsync()}
                 text = "Inicia sesión con Google"
             />
             <NavLink

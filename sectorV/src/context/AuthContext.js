@@ -92,6 +92,18 @@ const signin = (dispatch)=>async ({email,password})=>{
     }
 };
 
+const signinWithGoogle = dispatch => async ({idToken,accessToken})=>{ //TODO: FIX FIELDS
+    try{
+        const response = await expressAPI.post('/signupWithGoogle',{idToken});
+        await AsyncStorage.setItem('accessToken',accessToken);
+        await AsyncStorage.setItem('token',response.data.token);
+        await AsyncStorage.setItem('role',JSON.stringify(response.data.role));
+        dispatch({type:'signin',payload: response.data.token});
+    }catch(err){
+        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
+    }
+};
+
 const signout = (dispatch)=>async()=>{
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('role');
@@ -102,6 +114,6 @@ const signout = (dispatch)=>async()=>{
 
 export const {Provider,Context}=createDataContext(
     authReducer,
-    {signout,clearErrorMessage,signin,signup,tryLocalSignin,signupWithGoogle},
+    {signout,clearErrorMessage,signin,signup,tryLocalSignin,signupWithGoogle,signinWithGoogle},
     {token:null,errorMessage:''}
 );

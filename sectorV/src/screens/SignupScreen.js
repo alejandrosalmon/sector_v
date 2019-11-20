@@ -8,6 +8,7 @@ import {Text,Input, Button} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import GoogleSigninButton from '../components/GoogleSignInButton';
 import * as Google from 'expo-google-app-auth';
+import {AsyncStorage} from 'react-native';
 
 const SignupScreen = ({navigation})=>{
     const {state:{errorMessage},signup,signupWithGoogle,clearErrorMessage} = useContext(AuthContext);
@@ -27,7 +28,23 @@ const SignupScreen = ({navigation})=>{
                 signupWithGoogle({idToken,
                     accessToken}
                 );
+                
                 if(errorMessage == ''){
+                    const roleJSON = await AsyncStorage.getItem('role');
+                    if(roleJSON){
+                        try {
+                            role = JSON.parse(roleJSON);
+                            if(role==0){
+                                navigate('Report');
+                            }else if(role==1){
+                                navigate('CodeBar');
+                            }
+                        } catch (e) {
+                            console.error('AsyncStorage#getItem error deserializing JSON for key: role' +  e.message);
+                        }   
+                    }else{
+                        navigate('Signin');
+                    }
                     navigation.navigate('CodeBar');
                 }
                 //console.log(result.accessToken);

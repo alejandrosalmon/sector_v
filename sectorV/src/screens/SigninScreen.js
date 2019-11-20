@@ -8,21 +8,25 @@ import GoogleSigninButton from '../components/GoogleSignInButton';
 import * as Google from 'expo-google-app-auth';
 
 const SigninScreen = ({navigation})=>{
-    const {state,signin,clearErrorMessage} = useContext(Context);
+    const {state,signin,clearErrorMessage,signinWithGoogle} = useContext(Context);
 
     async function  signInWithGoogleAsync () {
         try {
-            const result = await Google.logInAsync({
+            const {idToken,accessToken,type} = await Google.logInAsync({
                 behavior:'web',
                 androidClientId: '750419774789-okk82pd6ejdoqihsln2o792qb4mrpb9g.apps.googleusercontent.com',
                 iosClientId: '750419774789-ca66i9k7ntfc963sgqrgvi31k3n8qs3s.apps.googleusercontent.com',
                 scopes: ['profile', 'email'],
             });
-            if (result.type === 'success') {
-                //navigation.navigate('');
-                console.log(result.user);
-                console.log(result.accessToken);
-                return result.accessToken;
+            if (type === 'success') {
+                signinWithGoogle({idToken,
+                    accessToken}
+                );
+                if(state.errorMessage == ''){
+                    navigation.navigate('CodeBar');
+                }
+                //console.log(result.accessToken);
+                return accessToken;
             } else {
                 return { cancelled: true };
             }

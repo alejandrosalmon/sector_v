@@ -45,18 +45,32 @@ const clearErrorMessage = dispatch => () =>{
     dispatch({type: 'clear_error_message'});
 };
 
+async function set_token_role_and_navigate(token,role,dispatch){
+    await AsyncStorage.setItem('token',token);
+    await AsyncStorage.setItem('role',JSON.stringify(role));
+    dispatch({type:'signin',payload: token});
+    const roleP = parseInt(role);
+    if(roleP==0){
+        navigate('Report');
+    }else if(roleP==1){
+        navigate('CodeBar');
+    }
+}
+
 const signup = dispatch => async ({email,password,name})=>{ //TODO: FIX FIELDS
     try{
         const response = await expressAPI.post('/signup',{email,password,name});
-        await AsyncStorage.setItem('token',response.data.token);
-        await AsyncStorage.setItem('role',JSON.stringify(response.data.role));
-        dispatch({type: 'signin', payload: response.data.token});
-        const role = parseInt(response.data.role);
-        if(role==0){
-            navigate('Report');
-        }else if(role==1){
-            navigate('CodeBar');
-        }
+        await set_token_role_and_navigate(response.data.token,response.data.role,dispatch);
+    }catch(err){
+        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
+    }
+};
+
+const signupWithGoogle = dispatch => async ({idToken,accessToken})=>{ //TODO: FIX FIELDS
+    try{
+        const response = await expressAPI.post('/signupWithGoogle',{idToken});
+        await AsyncStorage.setItem('accessToken',accessToken);
+        await set_token_role_and_navigate(response.data.token,response.data.role,dispatch);
     }catch(err){
         dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
     }
@@ -65,22 +79,29 @@ const signup = dispatch => async ({email,password,name})=>{ //TODO: FIX FIELDS
 const signin = (dispatch)=>async ({email,password})=>{
     try{
         const response = await expressAPI.post('/signin',{email,password});
-        await AsyncStorage.setItem('token',response.data.token);
-        await AsyncStorage.setItem('role',JSON.stringify(response.data.role));
-        dispatch({type:'signin',payload: response.data.token});
-        const role = parseInt(response.data.role);
-        if(role==0){
-            navigate('Report');
-        }else if(role==1){
-            navigate('CodeBar');
-        }
-        
+        await set_token_role_and_navigate(response.data.token,response.data.role,dispatch);
+    }catch(err){
+        console.log(err);
+        dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
+    }
+};
+
+const signinWithGoogle = dispatch => async ({idToken,accessToken})=>{ //TODO: FIX FIELDS
+    try{
+        const response = await expressAPI.post('/signinWithGoogle',{idToken});
+        await AsyncStorage.setItem('accessToken',accessToken);
+        await set_token_role_and_navigate(response.data.token,response.data.role,dispatch);
     }catch(err){
         dispatch({type: 'add_error', payload:'Usuario o contraseña inválida.'});
     }
 };
 
 const signout = (dispatch)=>async()=>{
+    try{
+        await AsyncStorage.removeItem('accessToken');
+    }catch(err){
+        console.log(err);
+    }
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('role');
     dispatch({type: 'signout'})
@@ -90,6 +111,6 @@ const signout = (dispatch)=>async()=>{
 
 export const {Provider,Context}=createDataContext(
     authReducer,
-    {signout,clearErrorMessage,signin,signup,tryLocalSignin},
+    {signout,clearErrorMessage,signin,signup,tryLocalSignin,signupWithGoogle,signinWithGoogle},
     {token:null,errorMessage:''}
 );

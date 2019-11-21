@@ -20,10 +20,14 @@ const CodeBarScreen = ()=>{
 
     return(
         <SafeAreaView forceInset={{top:'always'}}>
-            <NavigationEvents onWillFocus={()=>{
-                fetchProfiles();
-                fetchPackage();
-                fetchEntriesMonth();
+            <NavigationEvents onWillFocus={async ()=>{
+                try{
+                    await fetchProfiles();
+                    await fetchPackage();
+                    await fetchEntriesMonth();
+                }catch(err){
+                    console.log(err);
+                }
                 console.log(entryState.length);
             }}/>
             <Spacer>

@@ -6,12 +6,15 @@ import NavLink from '../components/NavLink';
 import {NavigationEvents} from 'react-navigation';
 import {Text,Input, Button} from 'react-native-elements';
 import Spacer from '../components/Spacer';
+import GoogleSigninButton from '../components/GoogleSignInButton';
+import * as Google from 'expo-google-app-auth';
 
-const SignupScreen = ({navigation})=>{
-    const {state:{errorMessage},signup,clearErrorMessage} = useContext(AuthContext);
+const SignupScreen = ()=>{
+    const {state:{errorMessage},signup,signupWithGoogle,clearErrorMessage} = useContext(AuthContext);
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [name,setName] = useState('');
+
     return (
         <View style = {styles.container}>
             <NavigationEvents
@@ -19,6 +22,13 @@ const SignupScreen = ({navigation})=>{
             />
             <Spacer>
                 <Text h3>Regístrate en Sector V</Text>
+            </Spacer>
+            <GoogleSigninButton
+                action = {signupWithGoogle}
+                text = "Regístrate con Google"
+            />
+            <Spacer>
+                <Text h4>O regístrate con tu correo electrónico</Text>
             </Spacer>
             {/* Falta validación regex de correo y un Input para confirmar contraseña. */}
             <Input 
@@ -67,7 +77,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent: 'center',
-        marginBottom: 200
+        marginBottom: 75
     },errorMessage:{
         fontSize:16,
         color: 'red',

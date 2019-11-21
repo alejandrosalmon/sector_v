@@ -1,5 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as Google from 'expo-google-app-auth';
+import {navigate} from '../navigationRef';
 
 const googleIcon = {
   uri:
@@ -11,7 +13,23 @@ const GoogleSignInButton = ({action,text}) =>{
             <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.touchable}
-                onPress={action}
+                onPress={async ()=>{
+                    try {
+                        const {idToken,accessToken,type} = await Google.logInAsync({
+                            behavior:'web',
+                            androidClientId: '750419774789-okk82pd6ejdoqihsln2o792qb4mrpb9g.apps.googleusercontent.com',
+                            iosClientId: '750419774789-ca66i9k7ntfc963sgqrgvi31k3n8qs3s.apps.googleusercontent.com',
+                            scopes: ['profile', 'email'],
+                        });
+                        if (type === 'success') {
+                            await action({idToken,accessToken});
+                        } else {
+                            navigate('Signin');
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }}
             >
                 <View style={styles.content}>
                     <Image source={googleIcon} style={styles.icon} />

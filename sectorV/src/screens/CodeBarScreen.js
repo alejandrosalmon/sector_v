@@ -1,8 +1,5 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {View,StyleSheet,Button} from 'react-native';
-// import {Button} from 'react-native-elements';
-// import Spacer from '../components/Spacer';
-// import {Context as AuthContext} from '../context/AuthContext';
 import {SafeAreaView, NavigationEvents} from 'react-navigation';
 import {Text, Image} from 'react-native-elements';
 import Spacer from '../components/Spacer';
@@ -11,12 +8,19 @@ import {Context as EntryContext} from '../context/EntryContext';
 import {Context as ProfileContext} from '../context/ProfileContext';
 import {Context as PackageContext} from '../context/PackageContext';
 import { navigate } from '../navigationRef';
+import {Notifications} from 'expo';
+import registerForPushNotificationsAsync from '../registerForPushNotificationsAsync';
 
 const CodeBarScreen = ()=>{
     const {state:userState, fetchProfiles}=useContext(ProfileContext);
     var {state:entryState, fetchEntriesMonth, registerEntry}=useContext(EntryContext);
     const {state:packageState, fetchPackage}=useContext(PackageContext);
+    const [notification,setNotification] = useState({});
     registerEntry.bind(this);
+
+    function _handleNotification (notification) {
+        setNotification({notification});
+    };
 
     return(
         <SafeAreaView forceInset={{top:'always'}}>
@@ -25,6 +29,8 @@ const CodeBarScreen = ()=>{
                     await fetchProfiles();
                     await fetchPackage();
                     await fetchEntriesMonth();
+                    await registerForPushNotificationsAsync();
+                    _notificationSubscription = Notifications.addListener(_handleNotification);
                 }catch(err){
                     console.log(err);
                 }
@@ -46,6 +52,11 @@ const CodeBarScreen = ()=>{
             <Spacer>
                 <Text h4>Día de corte: {userState.due_date}</Text>
                 <Text h4>Entradas Restantes: {packageState.entries_per_month - entryState.length}</Text>
+                {
+                    notification
+                    ?<Text>{notification.data}</Text>
+                    :null
+                }
             </Spacer>
             <Spacer>
                 <Button

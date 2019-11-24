@@ -12,17 +12,14 @@ const GyroScreen = () => {
 
     const [{x, y, z}, setGyroData] = useState({x:0, y:0, z:0});
 
-    Accelerometer.addListener(result => {
-        setGyroData(result);
-    });
-
-    const onWillBlur = () => {
-        Accelerometer.removeAllListeners();
-    };
-
     return (
         <SafeAreaView forceInset={{top:'always'}}>
-            <NavigationEvents onDidBlur={onWillBlur}/>
+            <NavigationEvents
+                onDidBlur={() => Accelerometer.removeAllListeners()}
+                onDidFocus={() => Accelerometer.addListener(result => {
+                                    setGyroData(result);
+                                })}
+                />
             <Spacer>
                 <Text h3>Gyro</Text>
             </Spacer>

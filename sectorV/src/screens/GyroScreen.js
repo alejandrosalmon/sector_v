@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {SafeAreaView} from 'react-navigation';
+import {SafeAreaView, NavigationEvents} from 'react-navigation';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {Text, Dimensions} from 'react-native-elements';
+import {Text} from 'react-native-elements';
 import {StyleSheet} from 'react-native';
 import Spacer from '../components/Spacer';
 import { Accelerometer, Gyroscope } from 'expo-sensors';
-import { round, getAnglesFromGyro } from '../util/gyro'
+import { getAnglesFromGyro } from '../util/gyro'
 
 const GyroScreen = () => {
     Accelerometer.setUpdateInterval(1000);
@@ -16,8 +16,13 @@ const GyroScreen = () => {
         setGyroData(result);
     });
 
+    const onWillBlur = () => {
+        Accelerometer.removeAllListeners();
+    };
+
     return (
         <SafeAreaView forceInset={{top:'always'}}>
+            <NavigationEvents onDidBlur={onWillBlur}/>
             <Spacer>
                 <Text h3>Gyro</Text>
             </Spacer>
@@ -35,10 +40,6 @@ GyroScreen.navigationOptions ={
     title: 'Gyro',
     tabBarIcon: <MaterialCommunityIcons name="rotate-3d" size={20}/>
 };
-
-GyroScreen.componentWillUnmount = () => {
-    Gyroscope.removeAllListeners();
-}
 
 const styles = StyleSheet.create({
     angle: {

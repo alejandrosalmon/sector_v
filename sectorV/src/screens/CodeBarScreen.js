@@ -24,6 +24,7 @@ const CodeBarScreen = ()=>{
 
     return(
         <SafeAreaView forceInset={{top:'always'}}>
+
             <NavigationEvents onWillFocus={async ()=>{
                 try{
                     await fetchProfiles();
@@ -34,7 +35,6 @@ const CodeBarScreen = ()=>{
                 }catch(err){
                     console.log(err);
                 }
-                console.log(entryState.length);
             }}/>
             <Spacer>
                 <Text h3>Inicio</Text>
@@ -51,6 +51,7 @@ const CodeBarScreen = ()=>{
             </View>
             <Spacer>
                 <Text h4>Día de corte: {userState.due_date}</Text>
+
                 <Text h4>Entradas Restantes: {packageState.entries_per_month - entryState.length}</Text>
                 {
                     notification
@@ -65,7 +66,7 @@ const CodeBarScreen = ()=>{
                         registerEntry();
                         fetchEntriesMonth();
                     }}
-                    disabled = {packageState.entries_per_month - entryState.length <= 0 ? true: false }
+                    disabled = {packageState.entries_per_month - entryState.entries.length <= 0 ? true: false }
                 />
             </Spacer>
         </SafeAreaView>

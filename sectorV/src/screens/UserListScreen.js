@@ -1,5 +1,5 @@
 import React,{useContext, useState} from 'react';
-import {Text,StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {NavigationEvents} from 'react-navigation';
 import { Context as UserContext } from "../context/UserContext";
 import {ListItem, SearchBar} from 'react-native-elements';
@@ -12,9 +12,7 @@ const UserListScreen = ({navigation})=>{
 
     function SearchFilterFunction(text) {
         console.log(text);
-        //passing the inserted text in textinput
         const newData = state.filter(function(item) {
-          //applying filter for the inserted text in search bar
           const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;

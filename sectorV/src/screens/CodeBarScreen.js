@@ -28,6 +28,7 @@ const CodeBarScreen = ()=>{
 
     return(
         <SafeAreaView forceInset={{top:'always'}}>
+
             <NavigationEvents onWillFocus={async ()=>{
                 try{
                     await fetchProfiles();
@@ -53,6 +54,7 @@ const CodeBarScreen = ()=>{
                 <Text>{userState.credential_id}</Text>
             </View>
             <Spacer>
+
                 {
                     (packageState.entries_per_month && !loading && entryState.entries>0) && 
                     <Text h4>Día de corte: {userState.due_date}{"\n"}Entradas Restantes: {packageState.entries_per_month - entryState.entries <= 0 ? 0 : packageState.entries_per_month - entryState.entries.entries}</Text>
@@ -65,6 +67,7 @@ const CodeBarScreen = ()=>{
                     loading &&
                     <ActivityIndicator size="large" color="#0000ff" />
                 }
+
                 {
                     notification
                     ?<Text>{notification.data}</Text>
@@ -72,6 +75,7 @@ const CodeBarScreen = ()=>{
                 }
             </Spacer>
             <Spacer>
+
                 {
                     // in case a user registers an entry, then it blocks the button until it complete the registry.
                     loading &&
@@ -91,6 +95,7 @@ const CodeBarScreen = ()=>{
                         }}
                     />
                 }
+
             </Spacer>
         </SafeAreaView>
     );

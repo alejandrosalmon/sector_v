@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
-import {View,Text,StyleSheet} from 'react-native';
+import {View,Text,StyleSheet,Button} from 'react-native';
 import AuthForm from '../components/AuthForm';
 import NavLink from '../components/NavLink';
 import {NavigationEvents} from 'react-navigation';
 import {Context} from '../context/AuthContext';
+import GoogleSigninButton from '../components/GoogleSignInButton';
 
 const SigninScreen = ()=>{
-    const {state,signin,clearErrorMessage} = useContext(Context);
+    const {state,signin,clearErrorMessage,signinWithGoogle} = useContext(Context);
+
     return(
         <View style = {styles.container}>
             <NavigationEvents
@@ -18,7 +20,10 @@ const SigninScreen = ()=>{
                 onSubmit={signin}
                 submitButtonText="Inicia sesión"
             />
-            
+            <GoogleSigninButton
+                action = {signinWithGoogle}
+                text = "Inicia sesión con Google"
+            />
             <NavLink
                 routeName="Signup"
                 text="¿No tienes cuenta? Regístrate"

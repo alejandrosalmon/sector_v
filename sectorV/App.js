@@ -2,6 +2,7 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 import AccountScreen from './src/screens/AccountScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
@@ -12,6 +13,8 @@ import ReportScreen from './src/screens/ReportScreen';
 import UserListScreen from './src/screens/UserListScreen';
 import UserDetailScreen from './src/screens/UserDetailScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import GyroScreen from './src/screens/GyroScreen';
+
 import {Feather} from '@expo/vector-icons';
 import {setNavigator} from './src/navigationRef';
 import {Provider as AuthProvider} from './src/context/AuthContext';
@@ -19,6 +22,7 @@ import {Provider as PackageProvider} from './src/context/PackageContext';
 import {Provider as UserProvider} from './src/context/UserContext';
 import {Provider as EntryProvider} from './src/context/EntryContext';
 import {Provider as ProfileProvider} from './src/context/ProfileContext';
+
 
 const userListflow = createStackNavigator({
   UserList: UserListScreen,
@@ -44,6 +48,7 @@ const switchNavigator = createSwitchNavigator({
   }),
   userFlow: createBottomTabNavigator({
     CodeBar: CodeBarScreen,
+    Gyro: GyroScreen,
     EntryList: EntryListScreen,
     Account:AccountScreen
   })

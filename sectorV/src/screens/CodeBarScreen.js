@@ -24,7 +24,7 @@ const CodeBarScreen = ()=>{
                 fetchProfiles();
                 fetchPackage();
                 fetchEntriesMonth();
-                console.log(entryState.length);
+                console.log(entryState.entries.length);
             }}/>
             <Spacer>
                 <Text h3>Inicio</Text>
@@ -41,7 +41,7 @@ const CodeBarScreen = ()=>{
             </View>
             <Spacer>
                 <Text h4>Día de corte: {userState.due_date}</Text>
-                <Text h4>Entradas Restantes: {packageState.entries_per_month - entryState.length}</Text>
+                <Text h4>Entradas Restantes: {packageState.entries_per_month - entryState.entries.length}</Text>
             </Spacer>
             <Spacer>
                 <Button
@@ -50,7 +50,7 @@ const CodeBarScreen = ()=>{
                         registerEntry();
                         fetchEntriesMonth();
                     }}
-                    disabled = {packageState.entries_per_month - entryState.length <= 0 ? true: false }
+                    disabled = {packageState.entries_per_month - entryState.entries.length <= 0 ? true: false }
                 />
             </Spacer>
         </SafeAreaView>

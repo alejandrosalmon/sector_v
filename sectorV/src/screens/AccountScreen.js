@@ -7,6 +7,17 @@ import {SafeAreaView} from 'react-navigation';
 import {Feather} from '@expo/vector-icons';
 import { Context as ProfileContext } from "../context/ProfileContext";
 import {NavigationEvents} from 'react-navigation';
+const moment=require('moment');
+
+moment.updateLocale('es', {
+    months : 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
+    monthsShort : 'ene._feb._mar_abr._may_jun_jul._ago_sep._oct._nov._dec.'.split('_'),
+    monthsParseExact : true,
+    weekdays : 'Domingo_Lunes_Martes_Miércoles_Jueves_Viernes_Sábado'.split('_'),
+    weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+    weekdaysMin : 'Di_Lu_Ma_Mi_Ju_Vi_Sa'.split('_'),
+    weekdaysParseExact : true,
+});
 
 const AccountScreen = ()=>{
     const {signout} = useContext(AuthContext);
@@ -19,8 +30,8 @@ const AccountScreen = ()=>{
             <Text h4> {state.role == '0'?'Admin':"Alumno"}</Text>
             <Spacer/>
             <Text h4> Fecha de Registro </Text>
-            <Text style={{fontSize: 18}}> {state.registration_time} </Text>
-            
+            <Text style={{fontSize: 18}}>{moment(state.registration_time, "YYYY-MM-DDTHH:mm:ss.sssZ").format("dddd, MMMM Do YYYY, h:mm:ss a")} </Text>
+
             <Spacer/>
             <Button
                 title="Cerrar sesión"

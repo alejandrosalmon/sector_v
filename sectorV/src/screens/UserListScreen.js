@@ -1,5 +1,5 @@
 import React,{useContext, useState} from 'react';
-import {Text,StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {NavigationEvents} from 'react-navigation';
 import { Context as UserContext } from "../context/UserContext";
 import {ListItem, SearchBar} from 'react-native-elements';

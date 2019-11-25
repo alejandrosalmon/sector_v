@@ -1,8 +1,8 @@
-import React,{useContext} from 'react';
+import React,{useContext, useState} from 'react';
 import {StyleSheet, FlatList} from 'react-native';
-import {NavigationEvents} from 'react-navigation';
+import {NavigationEvents, ScrollView} from 'react-navigation';
 import { Context as EntryContext } from "../context/EntryContext";
-import {ListItem,Text} from 'react-native-elements';
+import {ListItem,Text, SearchBar} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
 import {SafeAreaView} from 'react-navigation';
 import Spacer from '../components/Spacer';
@@ -20,12 +20,39 @@ moment.locale('es', {
 
 
 const EntryListScreen = ({navigation})=>{
+
+    const [textL, setTextL] = useState('');
+    const [data, setData] = useState([]);
     const {state, fetchEntries}=useContext(EntryContext);
-    return <SafeAreaView forceInset={{top:'always'}}>
+    
+    function SearchFilterFunction(text) {
+        console.log(text);
+        const newData = state.filter(function(item) {
+          const itemData = item.time ? item.time.toUpperCase() : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        setTextL(text);
+        setData(newData);
+    }
+
+    return <ScrollView forceInset={{top:'always'}}>
+        
         <NavigationEvents onWillFocus={fetchEntries}/>
         <Spacer>
             <Text h3>Historial de entradas</Text>
         </Spacer>
+
+        <SearchBar
+          round
+          lightTheme
+          searchIcon={{ size: 24 }}
+          onChangeText={text => SearchFilterFunction(text)}
+          onClear={text => SearchFilterFunction('')}
+          placeholder="Buscar..."
+          value={textL}
+        />
+
         <FlatList
             data ={state}
             keyExtractor={item=>item._id}
@@ -35,8 +62,12 @@ const EntryListScreen = ({navigation})=>{
                                 bottomDivider
                             /></Spacer>
             }}
+
+
         />
-    </SafeAreaView>
+       
+    
+    </ScrollView>
 };
 EntryListScreen.navigationOptions ={
     title: 'Historial',

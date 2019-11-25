@@ -12,9 +12,7 @@ const UserListScreen = ({navigation})=>{
 
     function SearchFilterFunction(text) {
         console.log(text);
-        //passing the inserted text in textinput
         const newData = state.filter(function(item) {
-          //applying filter for the inserted text in search bar
           const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;

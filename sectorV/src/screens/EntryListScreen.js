@@ -27,7 +27,7 @@ const EntryListScreen = ({navigation})=>{
             <Text h3>Historial de entradas</Text>
         </Spacer>
         <FlatList
-            data ={state}
+            data ={state.entryList}
             keyExtractor={item=>item._id}
             renderItem = {({item})=>{
                 return <Spacer><ListItem

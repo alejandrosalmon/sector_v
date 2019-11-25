@@ -4,9 +4,9 @@ import expressAPI from '../api/expressAPI';
 const entryReducer=(state, action)=>{
     switch(action.type){
         case 'fetch_entries':
-            return action.payload;
+            return {...state, entryList: action.payload};
         case 'fetch_entries_month':
-            return {...state, loading: false, entries: action.payload};
+            return {...state, entries:action.payload};
         case 'register_entry':
             return state;
         case 'fetch_all_entries':

@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {View,StyleSheet,Button} from 'react-native';
+import {ActivityIndicator,View,StyleSheet,Button} from 'react-native';
 import {SafeAreaView, NavigationEvents} from 'react-navigation';
-import {ActivityIndicator, Text, Image} from 'react-native-elements';
+import {Text, Image} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Ionicons} from '@expo/vector-icons';
 import {Context as EntryContext} from '../context/EntryContext';
@@ -54,12 +54,16 @@ const CodeBarScreen = ()=>{
             </View>
             <Spacer>
                 {
-                    (packageState.entries_per_month && !loading) && 
-                    <Text h4>Día de corte: {userState.due_date}{"\n"}Entradas Restantes: {packageState.entries_per_month - entryState.entries}</Text>
+                    (packageState.entries_per_month && !loading && entryState.entries>0) && 
+                    <Text h4>Día de corte: {userState.due_date}{"\n"}Entradas Restantes: {packageState.entries_per_month - entryState.entries <= 0 ? 0 : packageState.entries_per_month - entryState.entries.entries}</Text>
                 }
                 {
-                    (!packageState.entries_per_month || loading) && 
-                    <Text h4>Entradas Restantes: 0</Text>
+                    (!packageState.entries_per_month && !loading) && 
+                    <Text h4>Sin paquetes registrados</Text>
+                }
+                {
+                    loading &&
+                    <ActivityIndicator size="large" color="#0000ff" />
                 }
                 {
                     notification
@@ -85,7 +89,6 @@ const CodeBarScreen = ()=>{
                             registerEntry();
                             fetchEntriesMonth();
                         }}
-                        disabled = {(packageState.entries_per_month - entryState.entries) && packageState.entries_per_month ? false : true }
                     />
                 }
             </Spacer>

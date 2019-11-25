@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {View,StyleSheet,Button} from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
+import {ActivityIndicator,View,StyleSheet,Button} from 'react-native';
 import {SafeAreaView, NavigationEvents} from 'react-navigation';
 import {Text, Image} from 'react-native-elements';
 import Spacer from '../components/Spacer';
@@ -13,14 +13,18 @@ import registerForPushNotificationsAsync from '../registerForPushNotificationsAs
 
 const CodeBarScreen = ()=>{
     const {state:userState, fetchProfiles}=useContext(ProfileContext);
-    var {state:entryState, fetchEntriesMonth, registerEntry}=useContext(EntryContext);
+    var {state: entryState, fetchEntriesMonth, registerEntry}=useContext(EntryContext);
     const {state:packageState, fetchPackage}=useContext(PackageContext);
     const [notification,setNotification] = useState({});
-    registerEntry.bind(this);
+    const [loading, setLoading] = useState(true);
 
     function _handleNotification (notification) {
         setNotification({notification});
     };
+
+    useEffect(() => {
+        setLoading(false);
+    }, [entryState]);
 
     return(
         <SafeAreaView forceInset={{top:'always'}}>
@@ -50,9 +54,20 @@ const CodeBarScreen = ()=>{
                 <Text>{userState.credential_id}</Text>
             </View>
             <Spacer>
-                <Text h4>Día de corte: {userState.due_date}</Text>
 
-                <Text h4>Entradas Restantes: {packageState.entries_per_month - entryState.length}</Text>
+                {
+                    (packageState.entries_per_month && !loading && entryState.entries>0) && 
+                    <Text h4>Día de corte: {userState.due_date}{"\n"}Entradas Restantes: {packageState.entries_per_month - entryState.entries <= 0 ? 0 : packageState.entries_per_month - entryState.entries.entries}</Text>
+                }
+                {
+                    (!packageState.entries_per_month && !loading) && 
+                    <Text h4>Sin paquetes registrados</Text>
+                }
+                {
+                    loading &&
+                    <ActivityIndicator size="large" color="#0000ff" />
+                }
+
                 {
                     notification
                     ?<Text>{notification.data}</Text>
@@ -60,14 +75,27 @@ const CodeBarScreen = ()=>{
                 }
             </Spacer>
             <Spacer>
-                <Button
-                    title = "Registrar entrada"
-                    onPress = {() => {
-                        registerEntry();
-                        fetchEntriesMonth();
-                    }}
-                    disabled = {packageState.entries_per_month - entryState.entries.length <= 0 ? true: false }
-                />
+
+                {
+                    // in case a user registers an entry, then it blocks the button until it complete the registry.
+                    loading &&
+                    <Button
+                        title = "Cargando..."
+                        disabled
+                    />
+                }
+                {
+                    !loading &&
+                    <Button
+                        title = "Registrar entrada"
+                        onPress = {() => {
+                            setLoading(true);
+                            registerEntry();
+                            fetchEntriesMonth();
+                        }}
+                    />
+                }
+
             </Spacer>
         </SafeAreaView>
     );

@@ -1,6 +1,7 @@
 import createDataContext from "./createDataContext";
 import expressAPI from '../api/expressAPI';
 
+
 const moment=require('moment');
 
 moment.updateLocale('es', {
@@ -39,7 +40,7 @@ const fetchEntries = dispatch =>async() =>{
 
 const fetchEntriesMonth = dispatch => async() =>{
     const response = await expressAPI.get('/entries_this_month');
-    dispatch({type: 'fetch_entries_month', payload:response.data});
+    dispatch({type: 'fetch_entries_month', payload:response.data.length});
 }
 
 const registerEntry = dispatch => async() =>{

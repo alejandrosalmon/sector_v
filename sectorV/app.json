@@ -28,7 +28,8 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.SectorV.SectorVApp"
+      "package": "com.SectorV.SectorVApp",
+      "permissions": []
     },
     "description": "Proyecto de Desarrollo para Dispositivos Móviles\nEquipo\nJoaquín Herrera Ramos A01207504\nAlejandro Salmon Felix Diaz A01201954\nMiguel Angel Navarro Mata A01350836\nBárbara Fabiola Álvarez Palomino A01700398\nJosé Alfonso Díaz-Infante Camarena A01350809\n",
     "githubUrl": "https://github.com/alejandrosalmon/sector_v/"
